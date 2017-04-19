@@ -10,7 +10,8 @@ import (
 type GitRepo struct {
 	*github.Repository
 
-	lastCommit *CommitInfo
+	lastCommit  *CommitInfo
+	hasUpstream bool
 }
 
 func (gr *GitRepo) GetLastCommit() *CommitInfo {
@@ -41,7 +42,9 @@ func FetchRepos(client *Client) ([]*GitRepo, error) {
 		if nil == err {
 			gr.lastCommit = lc
 		}
+		gr.hasUpstream = r.Fork
 		grs[i] = gr
+
 	}
 	return grs, nil
 }
