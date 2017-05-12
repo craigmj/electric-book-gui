@@ -204,6 +204,7 @@ func pullRequestView(c *Context) error {
 	if nil != err {
 		return err
 	}
+
 	c.D[`Diffs`] = diffs
 	c.D[`SHA`] = *pr.Head.SHA
 	c.D[`PullURL`] = *pr.Head.Repo.CloneURL

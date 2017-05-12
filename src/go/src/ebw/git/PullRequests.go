@@ -80,7 +80,7 @@ func PullRequestCheckout(client *Client, remoteUrl, sha string) (string, error) 
 }
 
 func PullRequestDiffList(client *Client, user, repoOwner, repoName string,
-	sha string, pathRegexp string) ([]*PullRequestDiff, error) {
+sha string, pathRegexp string) ([]*PullRequestDiff, error) {
 	localPath, err := RepoDir(user, repoOwner, repoName)
 	if nil != err {
 		return nil, err
@@ -96,7 +96,7 @@ func PullRequestDiffList(client *Client, user, repoOwner, repoName string,
 // PullRequestUpdate just updates the file in the 'master' repo the
 // same as editing in the regular system.
 func PullRequestUpdate(client *Client, user, repoOwner, repoName string,
-	sha string, path string, content []byte) error {
+sha string, path string, content []byte) error {
 	return UpdateFile(client, user, repoOwner, repoName, path, content)
 	// localPath, err := RepoDir(user, repo)
 	// if nil != err {
@@ -158,11 +158,11 @@ func PullRequestCreate(client *Client, user, repoOwner, repoName, title, notes s
 }
 
 func GithubCreatePullRequest(
-	client *Client,
-	workingDir string,
-	remote string,
-	upstreamBranch string,
-	title, notes string) error {
+client *Client,
+workingDir string,
+remote string,
+upstreamBranch string,
+title, notes string) error {
 	var err error
 	if `` == workingDir {
 		workingDir, err = os.Getwd()
