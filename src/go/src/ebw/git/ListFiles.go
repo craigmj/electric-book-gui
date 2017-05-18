@@ -193,6 +193,74 @@ func ListAllRepoFiles(client *Client, user, repoOwner, repoName string) (Directo
 	return d, nil
 }
 
+func ListChangedFiles(client *Client,base string, repodir string, user string,
+	repoOwner string, repoName string) ([] string, error) {
+	var changedFiles [] string
+	repo, err := git2go.OpenRepository(repodir)
+	if nil != err {
+		return nil, err
+	}
+
+	commitID := base
+	commitOid, err := git2go.NewOid(commitID)
+	if nil != err {
+		return nil, err
+	}
+
+	commit, err := repo.LookupCommit(commitOid)
+	if nil != err {
+		return nil, err
+	}
+
+	commitTree, err := commit.Tree()
+	if nil != err {
+		return nil, err
+	}
+
+	options, err := git2go.DefaultDiffOptions()
+	if nil != err {
+		return nil, err
+	}
+
+	options.IdAbbrev = 1000
+	var parentTree *git2go.Tree
+	if commit.ParentCount() > 0 {
+		parentTree, err = commit.Parent(0).Tree()
+		if nil != err {
+			return nil, err
+		}
+	}
+
+	diff, err := repo.DiffTreeToTree(parentTree, commitTree, &options)
+	if nil != err {
+		return nil, err
+	}
+
+	//Pull out the diffs in the commit
+	deltas, err := diff.NumDeltas()
+	if nil != err {
+
+	}
+	for delta := 0; delta < deltas; delta++ {
+		p, err := diff.Patch(delta)
+		if nil != err {
+			return nil, err
+		}
+
+		ps, err := p.String()
+		if nil != err {
+			return nil, err
+		}
+
+		fmt.Println("patch", ps)
+		re := regexp.MustCompile("--- (...)(.*)")
+		r := regexp.MustCompile("(...) ([a-z])/(...)(.*)")
+		changedFiles = append(changedFiles, r.FindString(ps))
+		changedFiles = append(changedFiles, re.FindString(ps))
+	}
+	return changedFiles, nil
+}
+
 // ListFiles returns an array of all the files in the repo that match
 // the pathRegexp regular expression.
 func ListFiles(client *Client, user, repoOwner, repoName, pathRegexp string) ([]string, error) {

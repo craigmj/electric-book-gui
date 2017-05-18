@@ -26,9 +26,9 @@
                 {{end}}
             </div>
         </div>
-        {{end}} 
+        {{end}}
         <div class="todo">This seems to be PR requests, but it needs to be MASTER
-        ahead of FORK - so we would need to check FORK for upstream commits.</div>
+            ahead of FORK - so we would need to check FORK for upstream commits.</div>
     </section>
     {{if .PullRequests}}
     <section class="repo-detail-section">
@@ -36,7 +36,7 @@
         <div class="title-links">
             <div><h3>Edits for Review</h3></div>
             <div class="edit-links action-group" >
-                <a href="/repo/{{.RepoOwner}}/{{.Repo.Name}}/pull" class="btn">Review submitted edits</a> 
+                <a href="/repo/{{.RepoOwner}}/{{.Repo.Name}}/pull" class="btn">Review submitted edits</a>
                 <a href="/repo/{{.RepoOwner}}//{{.Repo.Name}}/update" class="btn">Make my own edits</a>
             </div>
         </div>
@@ -60,12 +60,12 @@
                     </div>
                 </div>
             </div>
-        {{end}}
+            {{end}}
         </div>
 
         <div class="todo">
-        Not entirely sure what `Make my own edits` does here...?
-        </div>        
+            Not entirely sure what `Make my own edits` does here...?
+        </div>
     </section>
     {{end}}
 
@@ -85,15 +85,17 @@
                     <th>Last updated by</th>
                 </tr>
                 </thead>
+                {{ if .RepoFiles }}
+                {{ range .RepoFiles }}
                 <tbody class="file-list">
-                {{ range .RepoFiles.Files}}
                 <tr>
-                    <td><a class="file-item">{{.Name}}</a></td>
+                    <td><a class="file-item">{{.}}</a></td>
                     <td>Change set description here</td>
                     <td>Username</td>
                 </tr>
-                {{ end }}
+                {{end}}
                 </tbody>
+                {{end}}
             </table>
         </div>
     </section>
@@ -112,7 +114,7 @@
             {{end}}
         </ol>
         <div class="todo">
-        These are the files that are changed on the EBW server, but haven't yet been committed to the repo. <i>Save these changes as an edit set</i> will allow entry of a Commit Message, and will commit the changes to the GitHub repo.
+            These are the files that are changed on the EBW server, but haven't yet been committed to the repo. <i>Save these changes as an edit set</i> will allow entry of a Commit Message, and will commit the changes to the GitHub repo.
         </div>
     </section>
     <section class="repo-detail-section">
